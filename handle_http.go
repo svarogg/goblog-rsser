@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/pkg/errors"
 )
@@ -22,11 +23,11 @@ func handleHTTP(w http.ResponseWriter, r *http.Request) {
 
 func getFeed() (string, error) {
 	if isCacheHot() {
-		fmt.Println("Cache is hot")
+		log.Info("Cache is hot")
 		return getCache(), nil
 	}
 
-	fmt.Println("Cache is cold... fetching feed")
+	log.Info("Cache is cold... fetching feed")
 
 	feed, err := fetchAndParseFeed()
 	if err != nil {
