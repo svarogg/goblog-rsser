@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"net/http"
 	"os"
 )
 
@@ -12,31 +12,7 @@ func printErrorAndExit(err error) {
 }
 
 func main() {
-	tmpFilename := "/tmp/html.html"
-	//html, err := getHTML()
-	//if err != nil {
-	//	printErrorAndExit(err)
-	//}
+	http.HandleFunc("/", handleHTTP)
 
-	//err = ioutil.WriteFile(tmpFilename, []byte(html), 0600)
-	//if err != nil {
-	//	printErrorAndExit(err)
-	//}
-
-	htmlBytes, err := ioutil.ReadFile(tmpFilename)
-	if err != nil {
-		printErrorAndExit(err)
-	}
-	html := string(htmlBytes)
-	blogEntries, err := parseHTML(html)
-	if err != nil {
-		printErrorAndExit(err)
-	}
-
-	feed, err := generateFeed(blogEntries)
-	if err != nil {
-		printErrorAndExit(err)
-	}
-
-	fmt.Println(feed)
+	printErrorAndExit(http.ListenAndServe(":8081", nil))
 }
